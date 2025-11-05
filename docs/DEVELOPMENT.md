@@ -19,7 +19,8 @@ Certifique-se de ter instalado:
 - **Git**
 - **Node.js 18+ e npm**
 
-> **Dica:** Use um **virtual environment** para isolar dependências Python.
+> [!TIP]
+> Use um **virtual environment** para isolar dependências Python.
 
 ---
 
