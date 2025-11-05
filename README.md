@@ -32,8 +32,8 @@ Desenvolvido **fora da infraestrutura institucional** para garantir segurança e
 | Categoria        | Ferramenta                 |
 | ---------------- | -------------------------- |
 | 🔙 Backend       | Python 3, FastAPI e Django |
-| 🗃 Banco de Dados | PostgreSQL                 |
 | 🎨 Frontend      | HTML5, CSS3, React         |
+| 🗃 Banco de Dados | PostgreSQL                 |
 | ⚙️ Infra Dev     | Git, GitHub, Virtualenv    |
 | 📦 Containers    | Docker (opcional)          |
 
@@ -64,3 +64,4 @@ Links importantes para desenvolvimento, contribuição e referências do projeto
 - [Guia de Desenvolvimento](./docs/DEVELOPMENT.md)
 - [Contribuindo](./CONTRIBUTING.md)
 - [Código de Conduta](./CODE_OF_CONDUCT.md)
+- [Licença](./LICENSE)
