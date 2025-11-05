@@ -55,6 +55,59 @@ pip install -r requirements.txt
 
 ---
 
+### 🧱 Estrutura Inicial do Backend (FastAPI)
+
+O backend segue uma estrutura modular e escalável:
+
+```bash
+backend/
+├── app/
+│   ├── main.py           # Ponto de entrada da aplicação
+│   ├── routes/           # Rotas organizadas por módulo
+│   ├── models/           # Modelos ORM (SQLAlchemy)
+│   ├── schemas/          # Validação e serialização (Pydantic)
+│   ├── services/         # Lógica de negócio
+│   ├── core/             # Configurações gerais (CORS, logs, etc.)
+│   └── database.py       # Conexão com o PostgreSQL
+└── requirements.txt
+```
+
+---
+
+### ⚙️ Criando o Projeto do Zero (caso necessário)
+
+Caso o ambiente ainda não tenha sido configurado, siga o fluxo abaixo para **startar do zero**:
+
+1. **Instale FastAPI e Uvicorn:**
+
+   ```bash
+   pip install fastapi uvicorn
+   ```
+
+2. **Crie o arquivo `main.py`:**
+
+   ```python
+   from fastapi import FastAPI
+
+   app = FastAPI()
+
+   @app.get("/")
+   def read_root():
+       return {"message": "Bem-vindo à API FastAPI do SEMCULT!"}
+
+   @app.get("/status")
+   def status():
+       return {"status": "online"}
+   ```
+
+3. **Rode o servidor local:**
+
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+---
+
 ## 4. Configuração do Banco de Dados
 
 1. Crie um banco PostgreSQL chamado `semlcult_dev`.
@@ -71,9 +124,9 @@ pip install -r requirements.txt
 
 3. Rode a inicialização do banco (se houver script SQL):
 
-```bash
-psql -U seu_usuario -d semlcult_dev -f database/init.sql
-```
+   ```bash
+   psql -U seu_usuario -d semlcult_dev -f database/init.sql
+   ```
 
 ---
 
@@ -88,9 +141,11 @@ uvicorn app.main:app --reload
 
 O backend FastAPI ficará disponível em:
 
-```
+```bash
 http://127.0.0.1:8000
 ```
+
+---
 
 ## 6. Configurando o Frontend (React)
 
@@ -109,16 +164,17 @@ npm start
 
 O frontend ficará disponível em:
 
-```text
+```bash
 http://localhost:3000
 ```
 
 > [!NOTE]
-> O frontend React se comunica com o backend FastAPI via API REST. Certifique-se que o backend esteja rodando antes de iniciar o React.
+> O frontend React se comunica com o backend FastAPI via API REST.
+> Certifique-se que o backend esteja rodando antes de iniciar o React.
 
 ---
 
-## 7. Estrutura de Pastas
+## 7. Estrutura de Pastas Geral
 
 ```bash
 reserva-inteligente-semcult/
@@ -145,10 +201,12 @@ reserva-inteligente-semcult/
 ## 8. Boas Práticas
 
 - Use **branches** separadas para cada feature ou bugfix.
-- Escreva **commits claros** e **descritivos**.
+- Escreva **commits claros e descritivos**.
 - Teste localmente antes de enviar Pull Requests.
 - Organize o backend em `routes/`, `models/`, `schemas/` e `services/`.
 - Organize o frontend em `components/`, `pages/` e `services/`.
+- Utilize **tipagem explícita** no Python e **componentização** no React.
+- Padronize os nomes de rotas e funções seguindo convenções REST.
 
 ---
 
@@ -160,4 +218,4 @@ reserva-inteligente-semcult/
 
 ---
 
-Com este guia, qualquer desenvolvedor consegue configurar, rodar e contribuir com o **Sistema de Reservas Inteligente – SEMCULT**, usando **FastAPI no backend** e **React no frontend**.
+Com este guia, qualquer desenvolvedor consegue configurar, rodar e contribuir com o **Sistema de Reservas Inteligente – SEMCULT**, utilizando **FastAPI** no backend, **React** no frontend e **PostgreSQL** como base de dados — mantendo o projeto padronizado, escalável e pronto para produção.
