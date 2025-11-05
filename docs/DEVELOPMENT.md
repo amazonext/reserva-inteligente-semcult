@@ -1,32 +1,29 @@
 # 🛠️ Guia de Desenvolvimento – Sistema de Reservas Inteligente – SEMCULT
 
-Este documento orienta sobre como configurar o ambiente de desenvolvimento, rodar o projeto localmente e boas práticas para contribuir no **Sistema de Reservas Inteligente – SEMCULT**.
+Este documento orienta sobre como configurar o ambiente de desenvolvimento, rodar o projeto localmente e seguir boas práticas para contribuir no **Sistema de Reservas Inteligente – SEMCULT**.
 
-A arquitetura do projeto é:
+**Arquitetura do projeto:**
 
 - **Backend:** FastAPI
-- **Frontend:** React e TailwindCSS
+- **Frontend:** React + TailwindCSS
 - **Banco de Dados:** PostgreSQL
 
 ---
 
 ## 1. Pré-requisitos
 
-Antes de começar, certifique-se de ter instalado:
+Certifique-se de ter instalado:
 
 - **Python 3.10+**
 - **PostgreSQL**
 - **Git**
 - **Node.js 18+ e npm**
 
-> [!TIP]
-> Use um **virtual environment** para isolar dependências Python.
+> **Dica:** Use um **virtual environment** para isolar dependências Python.
 
 ---
 
 ## 2. Clonando o Repositório
-
-No terminal:
 
 ```bash
 git clone https://github.com/seu-usuario/reserva-inteligente-semcult.git
@@ -37,84 +34,31 @@ cd reserva-inteligente-semcult
 
 ## 3. Configurando o Backend (FastAPI)
 
-Crie e ative o **virtualenv**:
-
-```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Linux / Mac
-source venv/bin/activate
-```
-
-Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-### 🧱 Estrutura Inicial do Backend (FastAPI)
-
-O backend segue uma estrutura modular e escalável:
-
-```bash
-backend/
-├── app/
-│   ├── main.py           # Ponto de entrada da aplicação
-│   ├── routes/           # Rotas organizadas por módulo
-│   ├── models/           # Modelos ORM (SQLAlchemy)
-│   ├── schemas/          # Validação e serialização (Pydantic)
-│   ├── services/         # Lógica de negócio
-│   ├── core/             # Configurações gerais (CORS, logs, etc.)
-│   └── database.py       # Conexão com o PostgreSQL
-└── requirements.txt
-```
-
----
-
-### ⚙️ Criando o Projeto do Zero (caso necessário)
-
-Caso o ambiente ainda não tenha sido configurado, siga o fluxo abaixo para **startar do zero**:
-
-1. **Instale FastAPI e Uvicorn:**
+1. Entre na pasta do backend:
 
    ```bash
-   pip install fastapi uvicorn
+   cd backend
    ```
 
-2. **Crie o arquivo `main.py`:**
-
-   ```python
-   from fastapi import FastAPI
-
-   app = FastAPI()
-
-   @app.get("/")
-   def read_root():
-       return {"message": "Bem-vindo à API FastAPI do SEMCULT!"}
-
-   @app.get("/status")
-   def status():
-       return {"status": "online"}
-   ```
-
-3. **Rode o servidor local:**
+2. Crie e ative o **virtual environment**:
 
    ```bash
-   uvicorn app.main:app --reload
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # Linux / Mac
+   source venv/bin/activate
    ```
 
----
+3. Instale as dependências:
 
-## 4. Configuração do Banco de Dados
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Crie um banco PostgreSQL chamado `semlcult_dev`.
+4. Configure o banco de dados no arquivo `.env`:
 
-2. Configure o arquivo `.env` com os dados do banco:
-
-   ```env
+   ```bash
    DB_HOST=localhost
    DB_PORT=5432
    DB_USER=seu_usuario
@@ -122,74 +66,76 @@ Caso o ambiente ainda não tenha sido configurado, siga o fluxo abaixo para **st
    DB_NAME=semlcult_dev
    ```
 
-3. Rode a inicialização do banco (se houver script SQL):
+5. Rode o FastAPI:
 
    ```bash
-   psql -U seu_usuario -d semlcult_dev -f database/init.sql
+   uvicorn app.main:app --reload
    ```
 
----
-
-## 5. Rodando o Backend
-
-No diretório do backend:
-
-```bash
-cd backend
-uvicorn app.main:app --reload
-```
-
-O backend FastAPI ficará disponível em:
-
-```bash
-http://127.0.0.1:8000
-```
+> [!NOTE]
+> O backend ficará disponível em `http://127.0.0.1:8000`.
 
 ---
 
-## 6. Configurando o Frontend (React)
-
-No diretório do frontend:
+### Estrutura do Backend
 
 ```bash
-cd frontend
-npm install
+backend/
+├── app/
+│   ├── main.py           # Ponto de entrada
+│   ├── routes/           # Rotas organizadas por módulo
+│   ├── models/           # Modelos ORM (SQLAlchemy)
+│   ├── schemas/          # Validação/serialização (Pydantic)
+│   ├── services/         # Lógica de negócio
+│   └── core/             # Configurações gerais
+└── requirements.txt
 ```
 
-Para iniciar o servidor de desenvolvimento React:
+---
 
-```bash
-npm start
-```
+## 4. Configurando o Frontend (React + TailwindCSS)
 
-O frontend ficará disponível em:
+1. Entre na pasta do frontend:
 
-```bash
-http://localhost:3000
-```
+   ```bash
+   cd frontend
+   ```
+
+2. Instale as dependências:
+
+   ```bash
+   npm install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+
+   ```bash
+   npm run dev
+   ```
 
 > [!NOTE]
-> O frontend React se comunica com o backend FastAPI via API REST.
-> Certifique-se que o backend esteja rodando antes de iniciar o React.
+> O frontend ficará disponível em `http://localhost:3000` ou na porta exibida pelo terminal.
+> Certifique-se de que o backend esteja rodando para que a comunicação via API funcione.
 
 ---
 
-## 7. Estrutura de Pastas Geral
+### Estrutura do Frontend
+
+```bash
+frontend/
+├── src/
+├── public/
+└── package.json
+```
+
+---
+
+## 5. Estrutura Geral do Projeto
 
 ```bash
 reserva-inteligente-semcult/
 ├── backend/          # FastAPI
-│   ├── app/
-│   │   ├── main.py
-│   │   ├── routes/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   └── services/
-│   └── requirements.txt
-├── frontend/         # React
-│   ├── src/
-│   ├── public/
-│   └── package.json
+├── frontend/         # React + TailwindCSS
 ├── database/         # Scripts SQL adicionais
 ├── docs/             # Documentação acadêmica e técnica
 ├── .env.example      # Exemplo de variáveis de ambiente
@@ -198,19 +144,19 @@ reserva-inteligente-semcult/
 
 ---
 
-## 8. Boas Práticas
+## 6. Boas Práticas
 
-- Use **branches** separadas para cada feature ou bugfix.
+- Use **branches separadas** para cada feature ou bugfix.
 - Escreva **commits claros e descritivos**.
 - Teste localmente antes de enviar Pull Requests.
 - Organize o backend em `routes/`, `models/`, `schemas/` e `services/`.
 - Organize o frontend em `components/`, `pages/` e `services/`.
 - Utilize **tipagem explícita** no Python e **componentização** no React.
-- Padronize os nomes de rotas e funções seguindo convenções REST.
+- Padronize nomes de rotas e funções seguindo convenções REST.
 
 ---
 
-## 9. Contribuindo
+## 7. Contribuindo
 
 - Leia [CONTRIBUTING.md](../CONTRIBUTING.md) antes de enviar Pull Requests.
 - Teste as alterações localmente.
@@ -218,4 +164,4 @@ reserva-inteligente-semcult/
 
 ---
 
-Com este guia, qualquer desenvolvedor consegue configurar, rodar e contribuir com o **Sistema de Reservas Inteligente – SEMCULT**, utilizando **FastAPI** no backend, **React** no frontend e **PostgreSQL** como base de dados — mantendo o projeto padronizado, escalável e pronto para produção.
+Com este guia, qualquer desenvolvedor consegue **configurar, rodar e contribuir** com o **Sistema de Reservas Inteligente – SEMCULT**, mantendo o projeto **padronizado, escalável e pronto para produção**.
