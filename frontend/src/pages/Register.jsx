@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "@/utils/schemas/user.schema";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import Main from "@/components/Main";
 
 export default function Register() {
+    const { register: registerUser, loading, error } = useAuth();
+
     const form = useForm({
         resolver: yupResolver(registerSchema),
         defaultValues: {
@@ -21,19 +24,19 @@ export default function Register() {
     });
 
     const onSubmit = async (dados) => {
-        try {
-            console.log("Usuário cadastrado:", dados);
-            await new Promise((resolve) => setTimeout(resolve, 500));
+        const result = await registerUser(dados);
 
-            toast.success("Cadastro realizado com sucesso!");
-        } catch (erro) {
-            console.error("Erro no cadastro:", erro);
-            toast.error("Erro ao cadastrar");
+        if (!result) {
+            toast.error(error || "Erro ao cadastrar");
+            return;
         }
+
+        toast.success("Cadastro realizado com sucesso!");
+        form.reset();
     };
 
-    const onError = (erros) => {
-        console.log("Erros de validação:", erros);
+    const onError = (errors) => {
+        console.log("Erros de validação:", errors);
         toast.error("Erro ao cadastrar");
     };
 
@@ -88,8 +91,8 @@ export default function Register() {
                                 )}
                             />
 
-                            <Button type="submit" className="w-full mt-2">
-                                Cadastrar-se
+                            <Button type="submit" className="w-full mt-2" disabled={loading}>
+                                {loading ? "Cadastrando..." : "Cadastrar-se"}
                             </Button>
                         </form>
                     </Form>

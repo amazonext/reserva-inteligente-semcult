@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import Main from "@/components/Main";
 
 export default function Login() {
+    const { login, loading } = useAuth();
+
     const form = useForm({
         defaultValues: {
             email: "",
@@ -16,24 +19,24 @@ export default function Login() {
         },
     });
 
-    const handleLogin = async data => {
-        try {
-            console.log("Login attempt:", data);
+    const handleLogin = async (data) => {
+        const result = await login(data);
 
-            // Simulate server request
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Place your actual authentication logic here
-            toast.success("Login successful!");
-        } catch (error) {
-            console.error("Login error:", error);
-            toast.error("Login failed");
+        if (!result) {
+            toast.error("Falha no login");
+            return;
         }
+
+        toast.success("Login realizado com sucesso!");
+        form.reset();
+
+        // Redirecionar, caso deseje:
+        // navigate("/dashboard");
     };
 
     const handleError = (errors) => {
         console.log("Validation errors:", errors);
-        toast.error("Login failed");
+        toast.error("Login inválido");
     };
 
     return (
@@ -73,8 +76,8 @@ export default function Login() {
                                 )}
                             />
 
-                            <Button type="submit" className="w-full mt-2">
-                                Entrar
+                            <Button type="submit" className="w-full mt-2" disabled={loading}>
+                                {loading ? "Entrando..." : "Entrar"}
                             </Button>
                         </form>
                     </Form>
