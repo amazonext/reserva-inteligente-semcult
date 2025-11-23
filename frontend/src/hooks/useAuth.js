@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "http://10.62.0.16:8000/api/users";
+const API = "http://localhost:8000/api/auth";
 
 export function useAuth() {
     const [loading, setLoading] = useState(false);
