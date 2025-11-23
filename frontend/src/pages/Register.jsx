@@ -56,7 +56,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Nome</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Digite seu nome" {...field} />
+                                            <Input placeholder="Digite seu nome" autoComplete="username"  {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -70,7 +70,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input type="email" placeholder="Digite seu email" {...field} />
+                                            <Input type="email" placeholder="Digite seu email" autoComplete="current-email" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -84,7 +84,7 @@ export default function Register() {
                                     <FormItem>
                                         <FormLabel>Senha</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Digite sua senha" {...field} />
+                                            <Input type="password" placeholder="Digite sua senha" autoComplete="current-password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -95,6 +95,8 @@ export default function Register() {
                                 {loading ? "Cadastrando..." : "Cadastrar-se"}
                             </Button>
                         </form>
+
+                        <p className="text-center text-zinc-800 m-5">Já sou cadastrado. <a href="/login" className="text-zinc-900 hover:underline">Entrar agora</a></p>
                     </Form>
                 </CardContent>
             </Card>
