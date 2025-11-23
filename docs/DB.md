@@ -118,7 +118,7 @@ http://127.0.0.1:8000/docs
 ```python
 from app.database import supabase
 
-class UserRepository:
+class AuthRepository:
     @staticmethod
     def create(data: dict):
         return supabase.table("users").insert(data).execute()
@@ -133,16 +133,16 @@ class UserRepository:
 ## 5. Serviços – Onde Ficam as Regras
 
 ```python
-from app.repositories.user_repository import UserRepository
+from app.repositories.auth_repository import AuthRepository
 
-class UserService:
+class AuthService:
     @staticmethod
     def register(user):
-        existing = UserRepository.find_by_email(user.email)
+        existing = AuthRepository.find_by_email(user.email)
         if existing.data:
             raise Exception("Usuário já existe")
 
-        return UserRepository.create(user.dict())
+        return AuthRepository.create(user.dict())
 ```
 
 ---
