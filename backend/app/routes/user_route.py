@@ -36,3 +36,6 @@ def login(user: UserLogin):
 
     Logger.success(f"Login finalizado com sucesso: {user.email}")
     return result
+
+    # @user_router.post("/logout")
+    # def logout()

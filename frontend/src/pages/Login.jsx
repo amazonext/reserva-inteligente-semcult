@@ -10,7 +10,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import Main from "@/components/Main";
 
 export default function Login() {
-    const { login, loading } = useAuth();
+    const { login, loading, error } = useAuth();
 
     const form = useForm({
         defaultValues: {
@@ -23,15 +23,12 @@ export default function Login() {
         const result = await login(data);
 
         if (!result) {
-            toast.error("Falha no login");
+            toast.error(error || "Falha no login");
             return;
         }
 
         toast.success("Login realizado com sucesso!");
         form.reset();
-
-        // Redirecionar, caso deseje:
-        // navigate("/dashboard");
     };
 
     const handleError = (errors) => {
@@ -55,7 +52,7 @@ export default function Login() {
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input type="email" placeholder="Digite seu email" {...field} />
+                                            <Input type="email" placeholder="Digite seu email" autoComplete="username" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -69,7 +66,7 @@ export default function Login() {
                                     <FormItem>
                                         <FormLabel>Senha</FormLabel>
                                         <FormControl>
-                                            <Input type="password" placeholder="Digite sua senha" {...field} />
+                                            <Input type="password" placeholder="Digite sua senha" autoComplete="current-password" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -80,6 +77,8 @@ export default function Login() {
                                 {loading ? "Entrando..." : "Entrar"}
                             </Button>
                         </form>
+
+                        <p className="text-center text-zinc-800 m-5">Não sou cadastrado. <a href="/register" className="text-zinc-900 hover:underline">Cadastrar-se agora</a></p>
                     </Form>
                 </CardContent>
             </Card>

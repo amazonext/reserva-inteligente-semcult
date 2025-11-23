@@ -1,4 +1,4 @@
-# 🛠️ Guia de Desenvolvimento – Sistema de Reservas Inteligente – SEMCULT
+# 🛠️ Guia de Desenvolvimento
 
 Este documento orienta sobre como configurar o ambiente de desenvolvimento, rodar o projeto localmente e seguir boas práticas para contribuir no **Sistema de Reservas Inteligente – SEMCULT**.
 
@@ -60,16 +60,17 @@ cd reserva-inteligente-semcult
 4. Configure o banco de dados no arquivo `.env`:
 
    ```bash
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_USER=seu_usuario
-   DB_PASSWORD=sua_senha
-   DB_NAME=semlcult_dev
+      SUPABASE_URL=https://utl.supabase.co
+      SUPABASE_KEY=anon_key
    ```
 
 5. Rode o FastAPI:
 
    ```bash
+   uvicorn app.main:app
+
+   # ou
+
    uvicorn app.main:app --reload
    ```
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-const API = "http://10.62.0.16:8000/api/users";
+const API = "http://localhost:8000/api/auth";
 
 export function useAuth() {
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,15 @@ export function useAuth() {
             const { data } = await axios.post(`${API}/login`, payload);
             return data;
         } catch (err) {
-            setError(err.response?.data?.detail || "Erro inesperado no login");
+            const detail = err.response?.data?.detail;
+
+            // padronizar a mensagem de erro que vai subir pro caller
+            const formatted =
+                typeof detail === "string"
+                    ? detail
+                    : detail?.error || detail?.message || "Erro inesperado no login";
+
+            setError(formatted);
             return null;
         } finally {
             setLoading(false);

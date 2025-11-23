@@ -60,7 +60,11 @@ class UserRepository:
         """
         try:
             Logger.info(f"Tentando login do usuário: {user.email}")
-            response = supabase.auth.sign_in(email=user.email, password=user.password)
+            response = supabase.auth.sign_in_with_password({
+                "email": user.email,
+                "password": user.password
+            })
+
 
             if getattr(response, "user", None):
                 Logger.success(f"Login bem-sucedido: {user.email}")

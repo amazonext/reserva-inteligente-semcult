@@ -1,6 +1,6 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.user_route import user_router
+from app.routes.auth_route import auth_router
 from app.utils.logs_util import Logger
 
 app = FastAPI(title="Reserva Inteligente API")
@@ -18,7 +18,7 @@ app.add_middleware(
 api_router = APIRouter(prefix="/api")
 
 # Incluindo rotas
-api_router.include_router(user_router)
+api_router.include_router(auth_router, prefix="/auth")
 
 # Subrota de teste
 test_router = APIRouter()
