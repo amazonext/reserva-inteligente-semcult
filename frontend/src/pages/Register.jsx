@@ -12,7 +12,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import Main from "@/components/Main";
 
 export default function Register() {
-    const { register: registerUser, loading, error } = useAuth();
+    const { register: registerAuth, loading, error } = useAuth();
 
     const form = useForm({
         resolver: yupResolver(registerSchema),
@@ -24,7 +24,7 @@ export default function Register() {
     });
 
     const onSubmit = async (dados) => {
-        const result = await registerUser(dados);
+        const result = await registerAuth(dados);
 
         if (!result) {
             toast.error(error || "Erro ao cadastrar");

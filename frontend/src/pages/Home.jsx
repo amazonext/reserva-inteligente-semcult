@@ -52,7 +52,7 @@ export default function Home() {
                             Centralize a gestão de forma simples e moderna.
                         </p>
                     </motion.div>
-                    
+
                     <motion.div
                         className="lg:w-auto z-10"
                         initial={{ opacity: 0, x: 50 }}
