@@ -1,18 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "@/utils/schemas/user.schema";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import Main from "@/components/Main";
 
-export default function Login() {
+export default function LoginForm({ onSwitchView, isFlipping }) {
     const { login, loading, error } = useAuth();
 
     const form = useForm({
+        resolver: yupResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -37,51 +38,42 @@ export default function Login() {
     };
 
     return (
-        <Main>
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle className="text-2xl text-center">Login</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(handleLogin, handleError)} className="space-y-4">
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input type="email" placeholder="Digite seu email" autoComplete="username" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleLogin, handleError)} className="space-y-4">
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input type="email" placeholder="Digite seu email" autoComplete="username" {...field} disabled={loading || isFlipping} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
-                            <FormField
-                                control={form.control}
-                                name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Senha</FormLabel>
-                                        <FormControl>
-                                            <Input type="password" placeholder="Digite sua senha" autoComplete="current-password" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Senha</FormLabel>
+                            <FormControl>
+                                <Input type="password" placeholder="Digite sua senha" autoComplete="current-password" {...field} disabled={loading || isFlipping} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
-                            <Button type="submit" className="w-full mt-2" disabled={loading}>
-                                {loading ? "Entrando..." : "Entrar"}
-                            </Button>
-                        </form>
+                <Button type="submit" className="w-full mt-2" disabled={loading || isFlipping}>
+                    {loading ? "Entrando..." : "Entrar"}
+                </Button>
+            </form>
 
-                        <p className="text-center text-zinc-800 m-5">Não sou cadastrado. <a href="/register" className="text-zinc-900 hover:underline">Cadastrar-se agora</a></p>
-                    </Form>
-                </CardContent>
-            </Card>
-        </Main>
+            <p className="text-center text-zinc-800 m-5">Não sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Cadastrar-se agora</a></p>
+        </Form>
     );
 }
