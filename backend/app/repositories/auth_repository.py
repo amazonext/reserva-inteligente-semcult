@@ -127,14 +127,13 @@ class AuthRepository:
     # LOGOUT
     # --------------------------------------------------------------
     @staticmethod
-    def logout(access_token: str) -> dict:
+    def logout(refresh_token: str) -> dict:
         """
         Logs out the user by invalidating the current refresh token.
         """
         try:
             Logger.info("[LOGOUT] Realizando logout...")
 
-            supabase.auth.set_auth(access_token)
             supabase.auth.sign_out()
 
             Logger.success("[LOGOUT] Logout realizado com sucesso")
