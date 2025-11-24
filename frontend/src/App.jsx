@@ -10,8 +10,9 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        {/* rotas de Login e Cadastro removidas, agora gerenciadas dentro de Home */}
+        {/* <Route path="/register" element={<Register />} /> */}
+        {/* <Route path="/login" element={<Login />} /> */}
       </Routes>
     </BrowserRouter>
   );
