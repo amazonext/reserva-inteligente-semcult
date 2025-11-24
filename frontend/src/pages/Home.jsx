@@ -1,9 +1,12 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, CalendarDays, BarChart3, Users, ArrowRight } from "lucide-react";
+
+// importa os novos componentes de formulário
+import LoginForm from "@/pages/Login";
+import RegisterForm from "@/pages/Register";
 
 const features = [
     {
@@ -29,7 +32,16 @@ const features = [
 ];
 
 export default function Home() {
-    const navigate = useNavigate();
+    const [isRegisterView, setIsRegisterView] = useState(false);
+    const [isFlipping, setIsFlipping] = useState(false);
+
+    const toggleView = () => {
+        setIsFlipping(true);
+        setTimeout(() => {
+            setIsRegisterView(prev => !prev);
+            setIsFlipping(false);
+        }, 400);
+    };
 
     return (
         <div className="w-full bg-gray-50 font-sans text-gray-800">
@@ -54,24 +66,46 @@ export default function Home() {
                     </motion.div>
 
                     <motion.div
-                        className="lg:w-auto z-10"
+                        className="lg:w-auto z-10 perspective-1000" 
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <Card className="shadow-2xl w-full max-w-sm">
-                            <CardContent className="p-8 text-center flex flex-col items-center justify-center gap-6">
-                                <p className="text-md text-gray-700">
-                                    Acesse sua conta ou cadastre-se para começar a utilizar a plataforma.
-                                </p>
-                                <div className="flex flex-col gap-4 w-full">
-                                    <Button onClick={() => navigate("/login")} size="lg" className="w-full">Login</Button>
-                                    <Button onClick={() => navigate("/register")} size="lg" variant="outline" className="w-full">
-                                        Registrar
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <motion.div
+                            className="relative w-full max-w-sm"
+                            style={{
+                                transformStyle: "preserve-3d", 
+                                width: "100%",
+                            }}
+                            animate={{ rotateY: isRegisterView ? 180 : 0 }}
+                            transition={{ duration: 0.8 }}
+                        >
+                            {/* Frente: Card de Login */}
+                            <Card className="shadow-2xl w-full absolute backface-hidden">
+                                <CardHeader>
+                                    <CardTitle className="text-2xl text-center">Login</CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-8 text-center flex flex-col items-center justify-center gap-6">
+                                    <p className="text-md text-gray-700">
+                                        Acesse sua conta para começar a utilizar a plataforma.
+                                    </p>
+                                    <LoginForm onSwitchView={toggleView} isFlipping={isFlipping} />
+                                </CardContent>
+                            </Card>
+
+                            {/* Verso: Card de Cadastro */}
+                            <Card className="shadow-2xl w-full backface-hidden" style={{ transform: 'rotateY(180deg)' }}>
+                                <CardHeader>
+                                    <CardTitle className="text-2xl text-center">Cadastro</CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-8 text-center flex flex-col items-center justify-center gap-6">
+                                    <p className="text-md text-gray-700">
+                                        Cadastre-se para ter acesso à plataforma de reservas.
+                                    </p>
+                                    <RegisterForm onSwitchView={toggleView} isFlipping={isFlipping} />
+                                </CardContent>
+                            </Card>
+                        </motion.div>
                     </motion.div>
                 </div>
 
@@ -145,7 +179,7 @@ export default function Home() {
                 <div className="container mx-auto text-center">
                     <h2 className="text-4xl font-bold font-heading mb-4">Pronto para otimizar a gestão dos espaços culturais?</h2>
                     <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">Transforme a maneira como os espaços culturais de Belém são gerenciados.</p>
-                    <Button onClick={() => navigate("/register")} size="lg" className="py-6 px-8 text-lg font-bold bg-white text-primary hover:bg-gray-200">
+                    <Button onClick={toggleView} size="lg" className="py-6 px-8 text-lg font-bold bg-white text-primary hover:bg-gray-200">
                         Comece Agora <ArrowRight className="ml-2 w-5 h-5" />
                     </Button>
                 </div>
