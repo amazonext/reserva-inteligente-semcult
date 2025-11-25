@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API = "http://localhost:8000/api/auth";
+const TOKEN_KEY = "supabase_jwt";
 
 export function useAuth() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY));
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        if (token) {
+            setUser({ token });
+        } else {
+            setUser(null);
+        }
+    }, [token]);
 
     const register = async (payload) => {
         try {
@@ -29,14 +39,16 @@ export function useAuth() {
 
             const { data } = await axios.post(`${API}/login`, payload);
 
-            // salva token
             if (data?.access_token) {
-                localStorage.setItem("jwt", data.access_token);
+                localStorage.setItem(TOKEN_KEY, data.access_token);
+                setToken(data.access_token);
+                setUser({ token: data.access_token });
             }
 
             return data;
         } catch (err) {
             const detail = err.response?.data?.detail;
+
             const formatted =
                 typeof detail === "string"
                     ? detail
@@ -50,7 +62,9 @@ export function useAuth() {
     };
 
     const logout = () => {
-        localStorage.removeItem("jwt");
+        localStorage.removeItem(TOKEN_KEY);
+        setToken(null);
+        setUser(null);
     };
 
     return {
@@ -59,5 +73,8 @@ export function useAuth() {
         logout,
         loading,
         error,
+        token,
+        user,
+        isAuthenticated: !!token,
     };
 }
