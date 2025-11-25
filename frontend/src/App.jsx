@@ -6,8 +6,6 @@ import Dashboard from "@/pages/Dashboard";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Reservations from "@/pages/Reservations";
-import About from "@/pages/About";
-import NotFound from "@/pages/NotFound";
 
 const AppRoutes = () => {
   return (
