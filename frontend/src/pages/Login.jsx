@@ -73,7 +73,7 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
                 </Button>
             </form>
 
-            <p className="text-center text-zinc-800 m-5">Não sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Cadastrar-se agora</a></p>
+            <p className="text-center text-zinc-700 m-5">Não sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Cadastrar-se agora</a></p>
         </Form>
     );
 }

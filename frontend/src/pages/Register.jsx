@@ -88,7 +88,7 @@ export default function RegisterForm({ onSwitchView, isFlipping }) {
                 </Button>
             </form>
 
-            <p className="text-center text-zinc-800 m-5">Já sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Entrar agora</a></p>
+            <p className="text-center text-zinc-700 m-5">Já sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Entrar agora</a></p>
         </Form>
     );
 }
