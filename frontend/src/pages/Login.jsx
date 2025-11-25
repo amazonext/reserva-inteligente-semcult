@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/utils/schemas/user.schema";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 
 export default function LoginForm({ onSwitchView, isFlipping }) {
     const { login, loading, error } = useAuth();
+    const navigate = useNavigate();
 
     const form = useForm({
         resolver: yupResolver(loginSchema),
@@ -30,6 +32,8 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
 
         toast.success("Login realizado com sucesso!");
         form.reset();
+
+        navigate("/reservations"); // redireciona após login
     };
 
     const handleError = (errors) => {
@@ -47,7 +51,13 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
                         <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                                <Input type="email" placeholder="Digite seu email" autoComplete="username" {...field} disabled={loading || isFlipping} />
+                                <Input
+                                    type="email"
+                                    placeholder="Digite seu email"
+                                    autoComplete="username"
+                                    {...field}
+                                    disabled={loading || isFlipping}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -61,7 +71,13 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
                         <FormItem>
                             <FormLabel>Senha</FormLabel>
                             <FormControl>
-                                <Input type="password" placeholder="Digite sua senha" autoComplete="current-password" {...field} disabled={loading || isFlipping} />
+                                <Input
+                                    type="password"
+                                    placeholder="Digite sua senha"
+                                    autoComplete="current-password"
+                                    {...field}
+                                    disabled={loading || isFlipping}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -73,7 +89,12 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
                 </Button>
             </form>
 
-            <p className="text-center text-zinc-700 m-5">Não sou cadastrado. <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">Cadastrar-se agora</a></p>
+            <p className="text-center text-zinc-700 m-5">
+                Não sou cadastrado.{" "}
+                <a onClick={onSwitchView} className="text-zinc-900 hover:underline cursor-pointer">
+                    Cadastrar-se agora
+                </a>
+            </p>
         </Form>
     );
 }
