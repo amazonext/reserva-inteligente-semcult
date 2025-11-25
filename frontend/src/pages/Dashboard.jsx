@@ -4,6 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { eventSchema } from "@/utils/schemas/event.schema";
+import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react"; 
 
 import { Form, FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -11,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { DateTimePicker } from "@/components/DateTimePicker";
 
 export default function Dashboard() {
+    const navigate = useNavigate();
+
     const form = useForm({
         resolver: yupResolver(eventSchema),
         defaultValues: {
@@ -41,7 +45,18 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md relative">
+            
+        
+            <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-2 right-2 text-gray-500 hover:text-black"
+                onClick={() => navigate("/reservations")}
+            >
+                <X className="h-5 w-5" />
+            </Button>
+
             <h2 className="text-2xl font-bold mb-4">Agendar Evento Cultural</h2>
 
             <Form {...form}>
