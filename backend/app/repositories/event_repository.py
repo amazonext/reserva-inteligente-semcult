@@ -24,9 +24,14 @@ async def get_event(event_id: str):
         return None
 
 
-async def list_events():
+async def list_events(user_id: str):
     try:
-        response = supabase.table(TABLE_NAME).select("*").execute()
+        response = (
+            supabase.table(TABLE_NAME)
+            .select("*")
+            .or_(f"is_public.eq.true,created_by.eq.{user_id}")
+            .execute()
+        )
         return response.data
     except Exception as e:
         logger.error(f"Failed to list events: {e}")
