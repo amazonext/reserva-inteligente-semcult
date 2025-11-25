@@ -16,8 +16,6 @@ const AppRoutes = () => {
         <Route path="/about" element={<About/>} />
         <Route path="/*" element={<NotFound/>} />
         <Route path="/reservations" element={<Reservations />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
