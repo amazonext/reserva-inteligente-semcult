@@ -28,11 +28,15 @@ export function useAuth() {
             setError(null);
 
             const { data } = await axios.post(`${API}/login`, payload);
+
+            // salva token
+            if (data?.access_token) {
+                localStorage.setItem("jwt", data.access_token);
+            }
+
             return data;
         } catch (err) {
             const detail = err.response?.data?.detail;
-
-            // padronizar a mensagem de erro que vai subir pro caller
             const formatted =
                 typeof detail === "string"
                     ? detail
@@ -45,9 +49,14 @@ export function useAuth() {
         }
     };
 
+    const logout = () => {
+        localStorage.removeItem("jwt");
+    };
+
     return {
         register,
         login,
+        logout,
         loading,
         error,
     };
