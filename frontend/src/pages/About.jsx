@@ -3,21 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-    Code, 
-    Server, 
-    Database, 
-    GitBranch, 
-    Award, 
-    Zap, 
-    Cloud, 
-    ArrowLeft 
-} from "lucide-react";
+import { Code, Server, Database, GitBranch, Award, Zap, Cloud, ArrowLeft } from "lucide-react";
 
 export default function About() {
     const navigate = useNavigate();
 
-    
+
     const objectives = [
         {
             icon: <Zap className="w-6 h-6 text-primary" />,
@@ -44,8 +35,8 @@ export default function About() {
     ];
 
     return (
-        <div className="w-full bg-gray-50 font-sans text-gray-800">
-            <header className="relative py-20 px-4 bg-gradient-to-br from-gray-100 to-gray-300 overflow-hidden">
+        <div className="w-full bg-zinc-50 font-sans text-zinc-800">
+            <header className="relative py-20 px-4 bg-gradient-to-br from-zinc-100 to-zinc-300 overflow-hidden">
                 <div className="container mx-auto text-center z-10 relative">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
@@ -55,11 +46,11 @@ export default function About() {
                         <p className="text-primary font-semibold mb-4 tracking-wide uppercase text-sm">
                             Institucional
                         </p>
-                        <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 font-heading">
+                        <h1 className="text-4xl lg:text-5xl font-extrabold text-zinc-900 mb-6 font-heading">
                             Sobre o Projeto
                         </h1>
-                        <p className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                            O Sistema de Reservas Inteligente é fruto de uma parceria entre a 
+                        <p className="text-lg text-zinc-700 max-w-2xl mx-auto leading-relaxed">
+                            O Sistema de Reservas Inteligente é fruto de uma parceria entre a
                             Faculdade Estácio Nazaré e a Secretaria Municipal de Cultura e Turismo de Belém.
                         </p>
                     </motion.div>
@@ -81,9 +72,9 @@ export default function About() {
             <section className="py-16 px-4 bg-white">
                 <div className="container mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold font-heading text-gray-900">Nosso Propósito</h2>
+                        <h2 className="text-3xl font-bold font-heading text-zinc-900">Nosso Propósito</h2>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {objectives.map((obj, index) => (
                             <motion.div
@@ -93,15 +84,15 @@ export default function About() {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.2 }}
                             >
-                                <Card className="h-full border-none shadow-lg hover:shadow-xl transition-shadow bg-gray-50">
+                                <Card className="h-full border-none shadow-lg hover:shadow-xl transition-shadow bg-zinc-50">
                                     <CardHeader>
                                         <div className="mb-2 bg-white w-12 h-12 rounded-lg flex items-center justify-center shadow-sm">
                                             {obj.icon}
                                         </div>
-                                        <CardTitle className="text-xl font-bold text-gray-900">{obj.title}</CardTitle>
+                                        <CardTitle className="text-xl font-bold text-zinc-900">{obj.title}</CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-gray-600 leading-relaxed">
+                                        <p className="text-zinc-600 leading-relaxed">
                                             {obj.description}
                                         </p>
                                     </CardContent>
@@ -112,16 +103,16 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="py-16 px-4 bg-gray-50">
+            <section className="py-16 px-4 bg-zinc-50">
                 <div className="container mx-auto max-w-4xl">
-                    <motion.div 
+                    <motion.div
                         className="text-center mb-12"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-3xl font-bold font-heading text-gray-900 mb-4">Stack Tecnológica</h2>
-                        <p className="text-gray-600">
+                        <h2 className="text-3xl font-bold font-heading text-zinc-900 mb-4">Stack Tecnológica</h2>
+                        <p className="text-zinc-600">
                             Ferramentas modernas utilizadas para garantir performance e segurança.
                         </p>
                     </motion.div>
@@ -134,14 +125,14 @@ export default function About() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                                className="flex items-center p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:border-primary/30 transition-colors"
+                                className="flex items-center p-6 bg-white rounded-xl shadow-sm border border-zinc-100 hover:border-primary/30 transition-colors"
                             >
-                                <div className="mr-4 p-3 bg-gray-100 rounded-full text-primary">
+                                <div className="mr-4 p-3 bg-zinc-100 rounded-full text-primary">
                                     {tech.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900">{tech.name}</h3>
-                                    <p className="text-sm text-gray-500">{tech.tools}</p>
+                                    <h3 className="font-bold text-zinc-900">{tech.name}</h3>
+                                    <p className="text-sm text-zinc-500">{tech.tools}</p>
                                 </div>
                             </motion.div>
                         ))}
@@ -151,17 +142,17 @@ export default function About() {
 
             <section className="py-12 px-4 bg-white text-center">
                 <div className="container mx-auto">
-                    <Button 
-                        onClick={() => navigate("/")} 
-                        variant="outline" 
-                        size="lg" 
+                    <Button
+                        onClick={() => navigate("/")}
+                        variant="outline"
+                        size="lg"
                         className="group"
                     >
                         <ArrowLeft className="mr-2 w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                         Voltar para o Início
                     </Button>
-                    
-                    <div className="mt-12 pt-8 border-t border-gray-100 text-sm text-gray-400">
+
+                    <div className="mt-12 pt-8 border-t border-zinc-100 text-sm text-zinc-400">
                         <p>&copy; {new Date().getFullYear()} Desenvolvido por alunos da Faculdade Estácio.</p>
                         <p className="mt-2 text-xs">Licença MIT</p>
                     </div>

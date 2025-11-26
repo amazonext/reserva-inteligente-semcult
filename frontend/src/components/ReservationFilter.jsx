@@ -9,10 +9,10 @@ export const ReservationFilter = ({ searchTerm, setSearchTerm, filter, setFilter
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-3 flex flex-col md:flex-row items-center gap-4 p-4 bg-white shadow-sm rounded-md">
                 <div className="relative w-full md:flex-1">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-zinc-400" />
                     <Input
                         placeholder="Buscar por evento ou solicitante..."
-                        className="pl-9 bg-gray-50/50 border-gray-200"
+                        className="pl-9 bg-zinc-50/50 border-zinc-200"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />

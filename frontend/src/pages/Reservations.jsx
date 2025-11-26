@@ -5,6 +5,8 @@ import { CalendarDays, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 
+import ReservationModal from "@/components/ReservationModal";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ReservationCard } from "@/components/ReservationCard";
@@ -41,19 +43,19 @@ export default function Reservations() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans text-gray-800 p-4 md:p-8">
+        <div className="min-h-screen bg-zinc-50 font-sans text-zinc-800 p-4 md:p-8">
             <div className="max-w-6xl mx-auto space-y-8">
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Gestão de Reservas</h1>
-                        <p className="text-gray-500 mt-1">Visualize e gerencie as solicitações de espaços culturais.</p>
+                        <h1 className="text-3xl font-bold tracking-tight text-zinc-900">Gestão de Reservas</h1>
+                        <p className="text-zinc-500 mt-1">Visualize e gerencie as solicitações de espaços culturais.</p>
                     </div>
-                    <Link to="/dashboard">
-                        <Button className="shadow-lg hover:shadow-xl transition-all">
+                    <ReservationModal>
+                        <Button className="shadow-lg hover:shadow-xl transition-all" >
                             <Plus className="mr-2 h-4 w-4" /> Nova Solicitação
                         </Button>
-                    </Link>
+                    </ReservationModal>
                 </div>
 
                 <ReservationFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} filter={filter} setFilter={setFilter} />
@@ -73,7 +75,7 @@ export default function Reservations() {
                 <ScrollArea className="h-[600px] rounded-lg border bg-white shadow-sm p-4">
                     <div className="grid grid-cols-1 gap-4">
                         {filteredReservas.length === 0 ? (
-                            <div className="text-center py-20 text-gray-400">
+                            <div className="text-center py-20 text-zinc-400">
                                 <CalendarDays className="h-12 w-12 mx-auto mb-3 opacity-20" />
                                 <p>Nenhuma reserva encontrada.</p>
                             </div>

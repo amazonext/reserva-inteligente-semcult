@@ -17,16 +17,16 @@ export const ReservationCard = ({ reserva, onApprove, onReject, formatDate }) =>
                     <div className="flex items-start justify-between">
                         <div>
                             <div className="flex items-center gap-3 mb-1">
-                                <h3 className="font-bold text-lg text-gray-900">{reserva.title}</h3>
+                                <h3 className="font-bold text-lg text-zinc-900">{reserva.title}</h3>
                                 <StatusBadge status={reserva.status} />
                             </div>
-                            <p className="text-sm text-gray-500 flex items-center gap-1">
-                                Solicitado por <span className="font-medium text-gray-700">{reserva.requester}</span>
+                            <p className="text-sm text-zinc-500 flex items-center gap-1">
+                                Solicitado por <span className="font-medium text-zinc-700">{reserva.requester}</span>
                             </p>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-gray-600 mt-2">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm text-zinc-600 mt-2">
                         <div className="flex items-center gap-2">
                             <CalendarDays className="h-4 w-4 text-primary" />
                             {formatDate(reserva.date)}
@@ -42,7 +42,7 @@ export const ReservationCard = ({ reserva, onApprove, onReject, formatDate }) =>
                     </div>
                 </div>
 
-                <div className="bg-gray-50 p-6 flex items-center justify-end gap-2 md:border-l border-t md:border-t-0 border-gray-100 min-w-[200px]">
+                <div className="bg-zinc-50 p-6 flex items-center justify-end gap-2 md:border-l border-t md:border-t-0 border-zinc-100 min-w-[200px]">
                     {reserva.status === 'pending' ? (
                         <>
                             <Button size="sm" variant="outline" className="text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200" onClick={() => onApprove(reserva.id)}>
