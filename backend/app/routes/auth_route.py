@@ -88,7 +88,7 @@ def logout(authorization: str = Header(None)):
                 "action": "Tente novamente."
             }
         )
-    
+
     Logger.success("[ROUTE LOGOUT] Logout finalizado com sucesso.")
 
     return {

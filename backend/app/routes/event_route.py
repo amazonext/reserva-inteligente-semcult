@@ -1,5 +1,7 @@
 from fastapi import Depends
-from app.auth_utils import get_current_user
+from app.repositories.auth_repository import get_current_user
+
+event_router = APIRouter(tags=["Event"])
 
 
 @router.post("/", response_model=EventResponse)

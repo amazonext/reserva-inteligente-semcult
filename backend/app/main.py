@@ -1,7 +1,10 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.auth_route import auth_router
 from app.utils.logs_util import Logger
+
+# routes
+from app.routes.auth_route import auth_router
+# from app.routes.event_route import event_router
 
 app = FastAPI(title="Reserva Inteligente API")
 
