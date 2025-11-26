@@ -1,77 +1,33 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import React, { createContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export function AuthProvider({ children }) {
+    const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const session = supabase.auth.getSession().then(({ data }) => {
-            setUser(data.session?.user || null);
-        });
-
-        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user || null);
-        });
-
-        return () => listener.subscription.unsubscribe();
+        const stored = localStorage.getItem("access_token");
+        if (stored) setToken(stored);
+        setLoading(false);
     }, []);
 
-    const register = async ({ email, password, name }) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const { data, error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: { data: { name } },
-            });
-
-            if (error) throw error;
-            setUser(data.user);
-            return data.user;
-        } catch (err) {
-            setError(err.message);
-            return null;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const login = async ({ email, password }) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw error;
-            setUser(data.user);
-            return data.user;
-        } catch (err) {
-            setError(err.message);
-            return null;
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const logout = async () => {
-        setLoading(true);
-        try {
-            await supabase.auth.signOut();
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
+    const logout = () => {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        setToken(null);
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, error, register, login, logout }}>
-            {children}
+        <AuthContext.Provider
+            value={{
+                token,
+                setToken,
+                logout,
+                isAuthenticated: !!token,
+            }}
+        >
+            {!loading && children}
         </AuthContext.Provider>
     );
-};
-
-export const useAuth = () => useContext(AuthContext);
+}
