@@ -175,7 +175,6 @@ export default function Home() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
                     >
-                        <Info className="w-12 h-12 mx-auto mb-6 text-zinc-900" />
                         <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-zinc-900">
                             Sobre nós
                         </h2>
