@@ -8,9 +8,7 @@ class AuthRepository:
     Repository for authentication-related operations using Supabase Auth.
     """
 
-    # --------------------------------------------------------------
     # SIGN UP
-    # --------------------------------------------------------------
     @staticmethod
     def register_user(user: AuthCreate) -> dict:
         """
@@ -61,14 +59,12 @@ class AuthRepository:
             Logger.exception(f"[REGISTER] Erro no registro: {e}")
             return {"error": str(e)}
 
-    # --------------------------------------------------------------
     # SIGN IN
-    # --------------------------------------------------------------
     @staticmethod
     def login_user(user: AuthLogin) -> dict:
         """
         Logs in the user using Supabase Auth (email and password).
-        Returns tokens and user id.
+        Returns tokens, user id and profile name.
         """
         try:
             Logger.info(f"[LOGIN] Tentando login do usuário: {user.email}")
@@ -96,9 +92,7 @@ class AuthRepository:
             Logger.exception(f"[LOGIN] Erro no login: {e}")
             return {"error": str(e)}
 
-    # --------------------------------------------------------------
     # GET USER BY EMAIL (PROFILES)
-    # --------------------------------------------------------------
     @staticmethod
     def get_auth_by_email(email: str) -> dict | None:
         """
@@ -123,9 +117,7 @@ class AuthRepository:
             Logger.exception(f"[GET USER] Erro ao buscar usuário: {e}")
             return None
 
-    # --------------------------------------------------------------
     # LOGOUT
-    # --------------------------------------------------------------
     @staticmethod
     def logout(refresh_token: str) -> dict:
         """
@@ -143,9 +135,7 @@ class AuthRepository:
             Logger.exception(f"[LOGOUT] Erro ao realizar logout: {e}")
             return {"error": str(e)}
 
-    # --------------------------------------------------------------
     # REFRESH TOKEN
-    # --------------------------------------------------------------
     @staticmethod
     def refresh_session(refresh_token: str) -> dict:
         """

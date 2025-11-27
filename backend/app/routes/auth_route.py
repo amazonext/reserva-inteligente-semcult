@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Header, Depends
+from fastapi import APIRouter, HTTPException, Header
 from app.models.auth_model import AuthCreate, AuthResponse, AuthLogin
 from app.repositories.auth_repository import AuthRepository
 from app.utils.logs_util import Logger
@@ -24,7 +24,7 @@ def register(user: AuthCreate):
 
     Logger.success(f"[ROUTE REGISTER] Registro finalizado com sucesso: {user.email}")
 
-    # ⚡ Desempacotar o user no mesmo nível do response_model
+    # Desempacotar o user no mesmo nível do response_model
     return {
         "id": result["user"]["id"],
         "name": result["user"]["name"],
@@ -45,7 +45,7 @@ def login(user: AuthLogin):
             status_code=401,
             detail={
                 "message": "Falha no login.",
-                "error": result["error"],  # <-- EXATAMENTE o erro original
+                "error": result["error"],
                 "action": "Verifique suas credenciais e tente novamente.",
             },
         )
@@ -55,10 +55,12 @@ def login(user: AuthLogin):
     return {
         "message": "Login efetuado com sucesso.",
         "auth_id": result["auth_id"],
+        "name": result["name"],
         "access_token": result["access_token"],
         "refresh_token": result["refresh_token"],
         "status": "success",
     }
+
 
 @auth_router.post("/logout")
 def logout(authorization: str = Header(None)):
@@ -70,8 +72,8 @@ def logout(authorization: str = Header(None)):
             detail={
                 "message": "Token não enviado.",
                 "error": "Missing token",
-                "action": "Envie o refresh token no header Authorization corretamente."
-            }
+                "action": "Envie o refresh token no header Authorization corretamente.",
+            },
         )
 
     refresh_token = authorization.replace("Bearer ", "").strip()
@@ -85,8 +87,8 @@ def logout(authorization: str = Header(None)):
             detail={
                 "message": "Erro ao fazer logout.",
                 "error": result["error"],
-                "action": "Tente novamente."
-            }
+                "action": "Tente novamente.",
+            },
         )
 
     Logger.success("[ROUTE LOGOUT] Logout finalizado com sucesso.")
