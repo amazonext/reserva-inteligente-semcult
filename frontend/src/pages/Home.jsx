@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, CalendarDays, BarChart3, Users, Mail, Github } from "lucide-react";
+import { FileText, CalendarDays, BarChart3, Users, Mail, Github, ArrowRight, Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import logoPrefeitura from "@/assets/images/logo-prefeitura.png";
 import LoginForm from "@/components/Login";
@@ -51,6 +52,7 @@ const steps = [
 ];
 
 export default function Home() {
+    const navigate = useNavigate();
     const [isRegisterView, setIsRegisterView] = useState(false);
     const [isFlipping, setIsFlipping] = useState(false);
 
@@ -160,6 +162,36 @@ export default function Home() {
                             </motion.div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            <section className="py-20 px-4 bg-zinc-100 relative overflow-hidden">
+                <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                
+                <div className="container mx-auto text-center relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <Info className="w-12 h-12 mx-auto mb-6 text-zinc-900" />
+                        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-zinc-900">
+                            Sobre nós
+                        </h2>
+                        <p className="text-lg md:text-xl text-zinc-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+                            Conheça mais sobre nossa missão e a tecnologia por trás do projeto.
+                        </p>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button 
+                                onClick={() => navigate("/about")} 
+                                size="lg" 
+                                className="px-8 py-6 text-lg font-bold shadow-lg hover:shadow-xl transition-all bg-primary text-primary-foreground hover:bg-primary/90"
+                            >
+                                Conheça o Projeto <ArrowRight className="ml-2 w-5 h-5" />
+                            </Button>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </section>
 
