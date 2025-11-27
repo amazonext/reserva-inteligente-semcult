@@ -1,48 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException
-from app.repositories.event_repository import event_repository
-from app.repositories.auth_repository import get_current_user
-from app.models.models import EventCreate, EventUpdate, EventResponse
+# app/routes/request_routes.py
+from fastapi import APIRouter, HTTPException
+from app.models.request_model import RequestCreate, RequestResponse
+from app.repositories.request_repository import RequestRepository
 
-event_router = APIRouter(tags=["Event"])
-
-
-@event_router.post("/", response_model=EventResponse)
-async def create_event(event: EventCreate, current_user=Depends(get_current_user)):
-    event_data = event.dict()
-    event_data["created_by"] = current_user.id  # atribui o usuário logado
-    event_data["status"] = "pendent"  # default
-    result = await event_repository.create_event(event_data)
-    if not result:
-        raise HTTPException(status_code=500, detail="Failed to create event")
-    return result[0]
+request_router = APIRouter(tags=["Requests"])
 
 
-@event_router.get("/", response_model=list[EventResponse])
-async def get_events(current_user=Depends(get_current_user)):
-    return await event_repository.list_events(current_user.id)
-
-
-@event_router.get("/{event_id}", response_model=EventResponse)
-async def get_event(event_id: str):
-    result = await event_repository.get_event(event_id)
-    if not result:
-        raise HTTPException(status_code=404, detail="Event not found")
+@request_router.post("/", response_model=RequestResponse)
+async def create_request(payload: RequestCreate):
+    result = RequestRepository.create_request(payload)
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
     return result
 
 
-@event_router.put("/{event_id}", response_model=EventResponse)
-async def update_event(event_id: str, event: EventUpdate):
-    result = await event_repository.update_event(
-        event_id, event.dict(exclude_unset=True)
-    )
-    if not result:
-        raise HTTPException(status_code=404, detail="Event not found or not updated")
+@request_router.get("/", response_model=list[RequestResponse])
+async def list_requests():
+    result = RequestRepository.list_requests()
+    if isinstance(result, dict) and "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
     return result
-
-
-@event_router.delete("/{event_id}")
-async def delete_event(event_id: str):
-    success = await event_repository.delete_event(event_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Event not found or not deleted")
-    return {"detail": "Event deleted successfully"}

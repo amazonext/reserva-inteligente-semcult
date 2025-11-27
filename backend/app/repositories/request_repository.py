@@ -1,59 +1,62 @@
 from app.database import supabase
+from app.models.request_model import RequestCreate
 from app.utils.logs_util import Logger
-
-logger = Logger("EventRepository")
-
-TABLE_NAME = "cultural_events"  # nome da tabela atualizado
+from datetime import datetime
 
 
-async def create_event(event_data: dict):
-    try:
-        response = supabase.table(TABLE_NAME).insert(event_data).execute()
-        return response.data
-    except Exception as e:
-        logger.error(f"Failed to create event: {e}")
-        return None
+class RequestRepository:
 
+    @staticmethod
+    def create_request(data: RequestCreate) -> dict:
+        try:
+            Logger.info(f"[REQUEST CREATE] Criando solicitação: {data.title}")
 
-async def get_event(event_id: str):
-    try:
-        response = supabase.table(TABLE_NAME).select("*").eq("id", event_id).execute()
-        return response.data[0] if response.data else None
-    except Exception as e:
-        logger.error(f"Failed to get event: {e}")
-        return None
+            payload = data.model_dump()
+            # Convertendo datetime para string ISO
+            payload["start_time"] = payload["start_time"].isoformat()
+            payload["end_time"] = payload["end_time"].isoformat()
 
+            response = supabase.table("requests").insert(payload).execute()
 
-async def list_events(user_id: str):
-    try:
-        # retorna eventos públicos ou do usuário logado
-        response = (
-            supabase.table(TABLE_NAME)
-            .select("*")
-            .or_(f"is_public.eq.public,created_by.eq.{user_id}")
-            .execute()
-        )
-        return response.data
-    except Exception as e:
-        logger.error(f"Failed to list events: {e}")
-        return []
+            if getattr(response, "error", None):
+                Logger.error(f"[REQUEST CREATE] Erro ao inserir: {response.error}")
+                return {"error": response.error.get("message", "Insert failed")}
 
+            created = response.data[0]
 
-async def update_event(event_id: str, update_data: dict):
-    try:
-        response = (
-            supabase.table(TABLE_NAME).update(update_data).eq("id", event_id).execute()
-        )
-        return response.data[0] if response.data else None
-    except Exception as e:
-        logger.error(f"Failed to update event: {e}")
-        return None
+            # Serializa datetime para string
+            for field in ["start_time", "end_time"]:
+                if isinstance(created.get(field), datetime):
+                    created[field] = created[field].isoformat()
 
+            Logger.success("[REQUEST CREATE] Solicitação criada")
+            return created
 
-async def delete_event(event_id: str):
-    try:
-        supabase.table(TABLE_NAME).delete().eq("id", event_id).execute()
-        return True
-    except Exception as e:
-        logger.error(f"Failed to delete event: {e}")
-        return False
+        except Exception as e:
+            Logger.exception(f"[REQUEST CREATE] Falha crítica: {e}")
+            return {"error": str(e)}
+
+    @staticmethod
+    def list_requests() -> list[dict]:
+        try:
+            Logger.info("[REQUEST LIST] Obtendo solicitações")
+
+            response = supabase.table("requests").select("*").execute()
+
+            if getattr(response, "error", None):
+                Logger.error(f"[REQUEST LIST] Erro: {response.error}")
+                return {"error": response.error.get("message", "Fetch failed")}
+
+            data = response.data
+
+            # Serializa datetimes
+            for item in data:
+                for field in ["start_time", "end_time"]:
+                    if isinstance(item.get(field), datetime):
+                        item[field] = item[field].isoformat()
+
+            return data
+
+        except Exception as e:
+            Logger.exception(f"[REQUEST LIST] Erro crítico: {e}")
+            return {"error": str(e)}

@@ -1,58 +1,41 @@
 from app.database import supabase
+from app.models.event_model import EventCreate
 from app.utils.logs_util import Logger
 
-logger = Logger("EventRepository")
 
-TABLE_NAME = "events"
+class EventRepository:
 
+    @staticmethod
+    def create_event(data: EventCreate) -> dict:
+        try:
+            Logger.info(f"[EVENT CREATE] Criando evento: {data.title}")
 
-async def create_event(event_data: dict):
-    try:
-        response = supabase.table(TABLE_NAME).insert(event_data).execute()
-        return response.data
-    except Exception as e:
-        logger.error(f"Failed to create event: {e}")
-        return None
+            payload = data.model_dump()
+            response = supabase.table("cultural_events").insert(payload).execute()
 
+            if getattr(response, "error", None):
+                Logger.error(f"[EVENT CREATE] Erro ao inserir: {response.error}")
+                return {"error": response.error.get("message", "Insert failed")}
 
-async def get_event(event_id: str):
-    try:
-        response = supabase.table(TABLE_NAME).select("*").eq("id", event_id).execute()
-        return response.data[0] if response.data else None
-    except Exception as e:
-        logger.error(f"Failed to get event: {e}")
-        return None
+            Logger.success("[EVENT CREATE] Evento criado")
+            return response.data[0]
 
+        except Exception as e:
+            Logger.exception(f"[EVENT CREATE] Falha crítica: {e}")
+            return {"error": str(e)}
 
-async def list_events(user_id: str):
-    try:
-        response = (
-            supabase.table(TABLE_NAME)
-            .select("*")
-            .or_(f"is_public.eq.true,created_by.eq.{user_id}")
-            .execute()
-        )
-        return response.data
-    except Exception as e:
-        logger.error(f"Failed to list events: {e}")
-        return []
+    @staticmethod
+    def list_events() -> dict:
+        try:
+            Logger.info("[EVENT LIST] Listando eventos")
 
+            response = supabase.table("cultural_events").select("*").execute()
 
-async def update_event(event_id: str, update_data: dict):
-    try:
-        response = (
-            supabase.table(TABLE_NAME).update(update_data).eq("id", event_id).execute()
-        )
-        return response.data[0] if response.data else None
-    except Exception as e:
-        logger.error(f"Failed to update event: {e}")
-        return None
+            if getattr(response, "error", None):
+                return {"error": response.error}
 
+            return response.data
 
-async def delete_event(event_id: str):
-    try:
-        response = supabase.table(TABLE_NAME).delete().eq("id", event_id).execute()
-        return True
-    except Exception as e:
-        logger.error(f"Failed to delete event: {e}")
-        return False
+        except Exception as e:
+            Logger.exception(f"[EVENT LIST] Erro crítico: {e}")
+            return {"error": str(e)}

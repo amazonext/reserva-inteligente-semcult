@@ -1,31 +1,37 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
+from typing import Optional
 
 
 class EventCreate(BaseModel):
     title: str = Field(..., min_length=1)
-    description: str = Field(..., min_length=1)
+    description: Optional[str] = None
+    category: Optional[str] = None
+    location_name: str = Field(..., min_length=1)
+    address: Optional[str] = None
+
     start_time: datetime
     end_time: datetime
-    location: str = Field(..., min_length=1)
-    is_public: bool = True
+    is_all_day: bool = False
 
+    requester_name: Optional[str] = None
+    requester_cpf: Optional[str] = None
 
-class EventUpdate(BaseModel):
-    title: str | None
-    description: str | None
-    start_time: datetime | None
-    end_time: datetime | None
-    location: str | None
-    is_public: bool | None
+    capacity: Optional[int] = None
+    status: str = "pending"
 
 
 class EventResponse(BaseModel):
     id: str
     title: str
-    description: str
+    description: Optional[str]
+    category: Optional[str]
+    location_name: str
+    address: Optional[str]
     start_time: datetime
     end_time: datetime
-    location: str
-    is_public: bool
-    created_by: str
+    is_all_day: bool
+    requester_name: Optional[str]
+    requester_cpf: Optional[str]
+    capacity: Optional[int]
+    status: str
