@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, CalendarDays, BarChart3, Users, ArrowRight } from "lucide-react";
+import { FileText, CalendarDays, BarChart3, Users, Mail, Github } from "lucide-react";
 
-// importa os novos componentes de formulário
+import logoPrefeitura from "@/assets/images/logo-prefeitura.png";
 import LoginForm from "@/components/Login";
 import RegisterForm from "@/components/Register";
 
@@ -188,10 +189,26 @@ export default function Home() {
                 </div>
             </section>
 
-            <footer className="py-6 px-4 bg-zinc-900 text-zinc-400">
-                <div className="container mx-auto text-center text-sm">
-                    <p>&copy; {new Date().getFullYear()} AmazoNext. Todos os direitos reservados.</p>
-                    <p className="mt-2 text-xs">Licença MIT</p>
+            <footer className="bg-zinc-900 text-zinc-400">
+                <div className="container mx-auto px-4 py-8">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                        <div className="flex-shrink-0">
+                            <img src={logoPrefeitura} alt="Logo da Prefeitura de Belém" className="h-16" />
+                        </div>
+
+                        <div className="text-center md:text-left text-sm">
+                            <p>&copy; {new Date().getFullYear()} AmazoNext. Todos os direitos reservados.</p>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <a href="mailto:contato@amazonext.com" title="Enviar E-mail" className="text-zinc-400 hover:text-primary transition-colors">
+                                <Mail className="w-6 h-6" />
+                            </a>
+                            <a href="https://github.com/AmazoNext/reserva-inteligente-semcult" target="_blank" rel="noopener noreferrer" title="Ver no GitHub" className="text-zinc-400 hover:text-primary transition-colors">
+                                <Github className="w-6 h-6" />
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </footer>
         </div>
