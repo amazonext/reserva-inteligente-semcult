@@ -77,16 +77,37 @@ class AuthRepository:
             user_data = getattr(auth_response, "user", None)
             session_data = getattr(auth_response, "session", None)
 
-            if user_data and session_data:
-                Logger.success(f"[LOGIN] Login bem-sucedido: {user.email}")
-                return {
-                    "auth_id": user_data.id,
-                    "access_token": session_data.access_token,
-                    "refresh_token": session_data.refresh_token,
-                }
+            if not (user_data and session_data):
+                Logger.warning(f"[LOGIN] Credenciais inválidas: {user.email}")
+                return {"error": "Invalid credentials"}
 
-            Logger.warning(f"[LOGIN] Credenciais inválidas: {user.email}")
-            return {"error": "Invalid credentials"}
+            auth_id = user_data.id
+
+            # Buscar nome do usuário na tabela profiles
+            profile_response = (
+                supabase.table("profiles")
+                .select("name")
+                .eq("id", auth_id)
+                .single()
+                .execute()
+            )
+
+            if getattr(profile_response, "error", None):
+                Logger.warning(
+                    f"[LOGIN] Erro ao buscar profile: {profile_response.error}"
+                )
+                return {"error": "Failed to fetch user profile"}
+
+            profile_name = profile_response.data.get("name")
+
+            Logger.success(f"[LOGIN] Login bem-sucedido: {user.email}")
+
+            return {
+                "auth_id": auth_id,
+                "name": profile_name,  # << Nome retornado!
+                "access_token": session_data.access_token,
+                "refresh_token": session_data.refresh_token,
+            }
 
         except Exception as e:
             Logger.exception(f"[LOGIN] Erro no login: {e}")
