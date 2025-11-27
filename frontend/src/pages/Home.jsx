@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { FileText, CalendarDays, BarChart3, Users, ArrowRight } from "lucide-react";
 
 // importa os novos componentes de formulário
@@ -31,6 +31,24 @@ const features = [
     },
 ];
 
+const steps = [
+    {
+        number: 1,
+        title: "Cadastre-se",
+        description: "Crie sua conta para ter acesso à plataforma de reservas."
+    },
+    {
+        number: 2,
+        title: "Solicite uma Reserva",
+        description: "Navegue pelos espaços e preencha o formulário de solicitação."
+    },
+    {
+        number: 3,
+        title: "Aguarde a Aprovação",
+        description: "Seu pedido será analisado por um gestor e você será notificado sobre o status."
+    }
+];
+
 export default function Home() {
     const [isRegisterView, setIsRegisterView] = useState(false);
     const [isFlipping, setIsFlipping] = useState(false);
@@ -45,7 +63,7 @@ export default function Home() {
 
     return (
         <div className="w-full bg-zinc-50 font-sans text-zinc-800">
-            <header className="relative flex flex-col lg:flex-row items-center justify-center min-h-screen p-4 bg-gradient-to-br from-zinc-100 to-zinc-300 overflow-hidden">
+            <header className="relative flex flex-col lg:flex-row items-center justify-center min-h-screen p-4 bg-linear-to-br from-zinc-100 to-zinc-300 overflow-hidden" id="form">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
                     <motion.div
                         className="lg:w-1/2 p-8 text-center lg:text-left z-10"
@@ -148,29 +166,17 @@ export default function Home() {
                 <div className="container mx-auto text-center">
                     <h2 className="text-4xl font-bold font-heading text-zinc-900 mb-16">Como Funciona?</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-                        <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-xl">1</div>
-                            <div>
-                                <h3 className="text-xl font-bold font-heading mb-2">Cadastre-se</h3>
-                                <p className="text-zinc-600">Crie sua conta para ter acesso à plataforma de reservas.</p>
+                        {steps.map(({ number, title, description }) => (
+                            <div key={number} className="flex items-start gap-4">
+                                <div className="shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-xl">
+                                    {number}
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold font-heading mb-2">{title}</h3>
+                                    <p className="text-zinc-600">{description}</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-xl">2</div>
-                            <div>
-                                <h3 className="text-xl font-bold font-heading mb-2">Solicite uma Reserva</h3>
-                                <p className="text-zinc-600">Navegue pelos espaços e preencha o formulário de solicitação.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-xl">3</div>
-                            <div>
-                                <h3 className="text-xl font-bold font-heading mb-2">Aguarde a Aprovação</h3>
-                                <p className="text-zinc-600">Seu pedido será analisado por um gestor e você será notificado sobre o status.</p>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -178,16 +184,14 @@ export default function Home() {
             <section className="py-24 px-4 bg-zinc-800 text-white">
                 <div className="container mx-auto text-center">
                     <h2 className="text-4xl font-bold font-heading mb-4">Pronto para otimizar a gestão dos espaços culturais?</h2>
-                    <p className="text-lg text-zinc-300 mb-8 max-w-2xl mx-auto">Transforme a maneira como os espaços culturais de Belém são gerenciados.</p>
-                    <Button onClick={toggleView} size="lg" className="py-6 px-8 text-lg font-bold bg-white text-primary hover:bg-zinc-200">
-                        Comece Agora <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
+                    <p className="text-lg text-zinc-300 max-w-2xl mx-auto">Transforme a maneira como os espaços culturais de Belém são gerenciados.</p>
                 </div>
             </section>
 
             <footer className="py-6 px-4 bg-zinc-900 text-zinc-400">
                 <div className="container mx-auto text-center text-sm">
                     <p>&copy; {new Date().getFullYear()} AmazoNext. Todos os direitos reservados.</p>
+                    <p className="mt-2 text-xs">Licença MIT</p>
                 </div>
             </footer>
         </div>

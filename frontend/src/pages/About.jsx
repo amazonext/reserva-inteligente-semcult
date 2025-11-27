@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Code, Server, Database, GitBranch, Award, Zap, Cloud, ArrowLeft } from "lucide-react";
@@ -28,15 +29,15 @@ export default function About() {
     ];
 
     const techStack = [
-        { name: "Frontend", tools: "React, Tailwind, HTML5", icon: <Code className="w-5 h-5" /> },
-        { name: "Backend", tools: "Python, FastAPI, Django", icon: <Server className="w-5 h-5" /> },
+        { name: "Frontend", tools: "React, Tailwind", icon: <Code className="w-5 h-5" /> },
+        { name: "Backend", tools: "Python, FastAPI", icon: <Server className="w-5 h-5" /> },
         { name: "Banco de Dados", tools: "PostgreSQL", icon: <Database className="w-5 h-5" /> },
-        { name: "Infraestrutura", tools: "Docker, Git", icon: <GitBranch className="w-5 h-5" /> },
+        { name: "Infraestrutura", tools: "Supabase", icon: <GitBranch className="w-5 h-5" /> },
     ];
 
     return (
         <div className="w-full bg-zinc-50 font-sans text-zinc-800">
-            <header className="relative py-20 px-4 bg-gradient-to-br from-zinc-100 to-zinc-300 overflow-hidden">
+            <header className="relative py-20 px-4 bg-linear-to-br from-zinc-100 to-zinc-300 overflow-hidden">
                 <div className="container mx-auto text-center z-10 relative">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
@@ -153,7 +154,7 @@ export default function About() {
                     </Button>
 
                     <div className="mt-12 pt-8 border-t border-zinc-100 text-sm text-zinc-400">
-                        <p>&copy; {new Date().getFullYear()} Desenvolvido por alunos da Faculdade Estácio.</p>
+                        <p>&copy; {new Date().getFullYear()} AmazoNext. Todos os direitos reservados.</p>
                         <p className="mt-2 text-xs">Licença MIT</p>
                     </div>
                 </div>
