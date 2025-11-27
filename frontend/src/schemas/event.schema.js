@@ -18,7 +18,7 @@ export const eventSchema = yup.object({
     end_time: yup
         .string()
         .required("O horário de fim é obrigatório"),
-    location: yup
+    location_name: yup
         .string()
         .required("O local é obrigatório")
         .min(1, "Mínimo 1 caractere"),

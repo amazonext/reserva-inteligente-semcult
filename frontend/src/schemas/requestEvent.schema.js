@@ -32,7 +32,7 @@ export const requestEventSchema = yup.object({
         .required("Informe a data e hora de término")
         .min(yup.ref("start_time"), "A data de término deve ser após a data de início"),
 
-    location: yup
+    location_name: yup
         .string()
         .required("Selecione o espaço desejado"),
 
