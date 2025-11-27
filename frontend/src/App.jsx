@@ -6,6 +6,7 @@ import Dashboard from "@/components/ReservationModal";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Reservations from "@/pages/Reservations";
+import UserReservation from "@/pages/UserReservation";
 
 // contexts
 import { AuthContext } from "./contexts/AuthContext";
@@ -20,6 +21,7 @@ const AppRoutes = () => {
           <Route path="/about" element={<About />} />
           <Route path="/*" element={<NotFound />} />
           <Route path="/reservations" element={<Reservations />} />
+          <Route path="/userreservation" element={<UserReservation />} />
         </Routes>
       </AuthContext>
     </BrowserRouter>
