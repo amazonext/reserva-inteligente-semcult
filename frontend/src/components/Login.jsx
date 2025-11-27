@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { loginSchema } from "@/utils/schemas/user.schema";
+import { loginSchema } from "@/schemas/user.schema";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +33,7 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
         toast.success("Login realizado com sucesso!");
         form.reset();
 
-        navigate("/reservations"); // redireciona após login
+        navigate("/reservations");
     };
 
     const handleError = (errors) => {

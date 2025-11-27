@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerSchema } from "@/utils/schemas/user.schema";
+import { registerSchema } from "@/schemas/user.schema";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
