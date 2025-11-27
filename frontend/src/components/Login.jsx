@@ -33,7 +33,7 @@ export default function LoginForm({ onSwitchView, isFlipping }) {
         toast.success("Login realizado com sucesso!");
         form.reset();
 
-        navigate("/reservations");
+        navigate("/request");
     };
 
     const handleError = (errors) => {

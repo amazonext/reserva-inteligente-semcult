@@ -2,10 +2,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { requestEventSchema } from "@/schemas/requestEvent.schema";
+import { useRequest } from "@/hooks/useRequest";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, CalendarPlus, FileText, Type, Clock, User } from "lucide-react";
-/* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { DateTimePicker } from "@/components/DateTimePicker";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group";
 
 export default function UserReservation() {
+    const { createRequest, loading, error } = useRequest();
     const navigate = useNavigate();
 
     const form = useForm({
@@ -27,9 +28,9 @@ export default function UserReservation() {
             requester_cpf: "123.456.789-00",
             title: "Workshop de Fotografia",
             description: "Aprendizado sobre técnicas de fotografia, equipamentos e edição.",
-            start_time: new Date(), // <-- objeto Date
-            end_time: new Date(Date.now() + 2 * 60 * 60 * 1000), // <-- +2h
-            location: "Estação das Docas",
+            start_time: new Date(),
+            end_time: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2h depois
+            location_name: "Estação das Docas",
             capacity: 50,
         },
     });
@@ -37,17 +38,26 @@ export default function UserReservation() {
     const { errors } = form.formState;
 
     const onSubmit = async (data) => {
-        // Log completo do form antes de enviar
-        console.log("Formulário a ser enviado:", data);
+        const payload = {
+            ...data,
+            start_time: data.start_time ? new Date(data.start_time).toISOString() : null,
+            end_time: data.end_time ? new Date(data.end_time).toISOString() : null,
+        };
 
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        console.log("Payload enviado:", payload);
 
-        toast.success("Solicitação enviada com sucesso!", {
-            description: `Obrigado, ${data.requester_name}. Seu pedido será analisado pela equipe.`,
-            duration: 5000,
-        });
+        const result = await createRequest(payload);
+        console.log(result);
 
-        navigate("/");
+        if (result) {
+            toast.success("Solicitação enviada com sucesso!", {
+                description: `Obrigado, ${data.requester_name}. Seu pedido será analisado pela equipe.`,
+                duration: 5000,
+            });
+            navigate("/");
+        } else {
+            toast.error("Falha ao enviar a solicitação. Tente novamente.");
+        }
     };
 
     const formatCPF = (value) => {
@@ -93,7 +103,7 @@ export default function UserReservation() {
                                         size="icon"
                                         onClick={() => navigate("/")}
                                         className="-ml-2 text-zinc-500 hover:text-primary hover:bg-primary/10"
-                                        title="Voltar ao início"
+                                        title="Voltar"
                                     >
                                         <ArrowLeft className="h-5 w-5" />
                                     </Button>
@@ -112,7 +122,6 @@ export default function UserReservation() {
                                         <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-2">
                                             <User className="w-4 h-4" /> Dados do Solicitante
                                         </h3>
-
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                                             <div className="md:col-span-2">
                                                 <FormField
@@ -129,7 +138,6 @@ export default function UserReservation() {
                                                     )}
                                                 />
                                             </div>
-
                                             <div>
                                                 <FormField
                                                     control={form.control}
@@ -162,7 +170,6 @@ export default function UserReservation() {
                                         <h3 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider flex items-center gap-2">
                                             <CalendarPlus className="w-4 h-4" /> Dados do Evento
                                         </h3>
-
                                         <FormField
                                             control={form.control}
                                             name="title"
@@ -179,18 +186,16 @@ export default function UserReservation() {
                                                 </FormItem>
                                             )}
                                         />
-
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                            {/* Local */}
                                             <FormField
                                                 control={form.control}
-                                                name="location"
+                                                name="location_name"
                                                 render={({ field }) => (
                                                     <FormItem>
                                                         <FormLabel>Espaço Desejado</FormLabel>
                                                         <FormControl>
                                                             <Select {...field} onValueChange={field.onChange}>
-                                                                <SelectTrigger className={getInputClass("location")}>
+                                                                <SelectTrigger className={getInputClass("location_name")}>
                                                                     <SelectValue placeholder="Selecione o local" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
@@ -209,8 +214,6 @@ export default function UserReservation() {
                                                     </FormItem>
                                                 )}
                                             />
-
-                                            {/* Capacidade */}
                                             <FormField
                                                 control={form.control}
                                                 name="capacity"
@@ -236,7 +239,6 @@ export default function UserReservation() {
                                             />
                                         </div>
 
-                                        {/* Datas */}
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-5 bg-zinc-50/80 rounded-lg border border-zinc-100">
                                             <FormField
                                                 control={form.control}
@@ -247,13 +249,16 @@ export default function UserReservation() {
                                                             <Clock className="h-3.5 w-3.5 text-primary" /> Início
                                                         </FormLabel>
                                                         <FormControl>
-                                                            <DateTimePicker {...field} className={getInputClass("start_time")} />
+                                                            <DateTimePicker
+                                                                {...field}
+                                                                type="start"
+                                                                className={getInputClass("start_time")}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
                                                 )}
                                             />
-
                                             <FormField
                                                 control={form.control}
                                                 name="end_time"
@@ -263,7 +268,11 @@ export default function UserReservation() {
                                                             <Clock className="h-3.5 w-3.5 text-primary" /> Término
                                                         </FormLabel>
                                                         <FormControl>
-                                                            <DateTimePicker {...field} className={getInputClass("end_time")} />
+                                                            <DateTimePicker
+                                                                {...field}
+                                                                type="end"
+                                                                className={getInputClass("end_time")}
+                                                            />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -271,7 +280,6 @@ export default function UserReservation() {
                                             />
                                         </div>
 
-                                        {/* Descrição */}
                                         <FormField
                                             control={form.control}
                                             name="description"
@@ -290,6 +298,8 @@ export default function UserReservation() {
                                             )}
                                         />
                                     </div>
+
+                                    {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
                                 </form>
                             </Form>
                         </CardContent>
@@ -306,9 +316,9 @@ export default function UserReservation() {
                                     type="submit"
                                     form="public-reservation-form"
                                     className="flex-1 md:flex-none min-w-[150px] font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30"
-                                    disabled={form.formState.isSubmitting}
+                                    disabled={loading || form.formState.isSubmitting}
                                 >
-                                    {form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitação"}
+                                    {loading || form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitação"}
                                 </Button>
                             </div>
                         </CardFooter>
